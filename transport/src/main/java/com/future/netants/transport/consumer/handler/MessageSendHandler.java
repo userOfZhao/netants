@@ -36,5 +36,6 @@ public class MessageSendHandler extends SimpleChannelInboundHandler {
 
     public Message sendMsg(Message msg) {
         ctx.channel().writeAndFlush(Unpooled.copiedBuffer(msg.toString().getBytes()));
+        return new Message();
     }
 }

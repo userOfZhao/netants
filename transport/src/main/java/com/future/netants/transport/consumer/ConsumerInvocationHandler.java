@@ -17,9 +17,6 @@ public class ConsumerInvocationHandler implements InvocationHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(ConsumerInvocationHandler.class);
 
-    private ChannelHandlerContext context;
-
-
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         MessageRequest requestMessage = (MessageRequest) MessageFactory.getInstance().createObject("request");

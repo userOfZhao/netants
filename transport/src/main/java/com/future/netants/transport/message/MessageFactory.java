@@ -1,7 +1,7 @@
 package com.future.netants.transport.message;
 
-import com.future.netants.core.AbstractFactory;
-import com.future.netants.core.Factory;
+import com.future.netants.core.factory.AbstractFactory;
+import com.future.netants.core.factory.Factory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,16 +17,14 @@ public class MessageFactory<T extends Message> extends AbstractFactory {
     private MessageFactory() {}
 
     public static MessageFactory getInstance() {
-        if (instance != null) {
-            return instance;
-        }
-        synchronized (MessageFactory.class) {
-            if (instance != null) {
-                return instance;
+        if (instance == null) {
+            synchronized (MessageFactory.class) {
+                if (instance == null) {
+                    instance = new MessageFactory();
+                }
             }
-            instance = new MessageFactory();
-            return instance;
         }
+        return instance;
     }
 
     @Override
