@@ -8,8 +8,6 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 /**
@@ -22,40 +20,31 @@ public class RPCConsumer implements Consumer {
     private static WriteMessageHandler writeMessageHandler;
 
     @Override
-    public Object refer(Class clazz, String provider) {
-        return Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, new ConsumerInvocationHandler());
-    }
-
-    // 构造一个虚假的实现类，实际上是由远程服务来提供的
-    private class ConsumerInvocationHandler implements InvocationHandler {
-
-        @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            return writeMessageHandler.call(args);
-        }
+    public <T>T refer(Class<T> clazz, String provider) {
+        initClient();
+        return (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class<?>[]{clazz}, new ConsumerInvocationHandler());
     }
 
     private void initClient() {
+        writeMessageHandler = new WriteMessageHandler();
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         try {
             Bootstrap bootstrap = new Bootstrap();
             bootstrap.group(bossGroup)
                     .channel(NioSocketChannel.class)
-                    .option(ChannelOption.SO_BACKLOG, 1024)
+                    .option(ChannelOption.SO_KEEPALIVE, true)
+                    .option(ChannelOption.TCP_NODELAY, true)
                     .handler(new ChildChannelHandler());
 
-            ChannelFuture future = bootstrap.connect("localhost", 9999);
-            future.channel().closeFuture().sync();
-        } catch (InterruptedException e) {
+            ChannelFuture future = bootstrap.connect("localhost", 9997).sync();
+        } catch (Exception e) {
             logger.error("Interrupted occurs", e);
-            throw new RuntimeException("Interrupted occurs");
         }
     }
 
     private static class ChildChannelHandler extends ChannelInitializer {
         @Override
         protected void initChannel(Channel channel) throws Exception {
-            writeMessageHandler = new WriteMessageHandler();
             channel.pipeline().addLast(writeMessageHandler);
         }
     }

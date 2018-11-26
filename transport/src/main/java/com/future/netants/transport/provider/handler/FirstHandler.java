@@ -1,6 +1,7 @@
 package com.future.netants.transport.provider.handler;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.slf4j.Logger;
@@ -23,5 +24,7 @@ public class FirstHandler extends SimpleChannelInboundHandler {
 
         String body = new String(req, Charset.forName("UTF-8"));
         logger.info("receive body from client {}", body);
+
+        channelHandlerContext.writeAndFlush(Unpooled.copiedBuffer("hello you".getBytes()));
     }
 }

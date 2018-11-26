@@ -20,7 +20,7 @@ public class ServerStart {
 
     private ServerStart() {}
 
-    static void start(int port) {
+    public static void start(int port) {
         bossGroup = new NioEventLoopGroup();
         workGroup = new NioEventLoopGroup();
 
