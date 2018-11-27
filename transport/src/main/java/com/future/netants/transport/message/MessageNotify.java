@@ -53,7 +53,19 @@ public class MessageNotify {
     }
 
     /**
-     * 通知消息已经到达
+     * 服务提供者本地服务处理，同步阻塞，等待本地服务返回
+     */
+    public MessageResponse dolocal() {
+        try {
+            countDownLatch.await(DEFAULT_MESSAGE_WAIT, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            logger.error("wait to local server response error. messageId is {}", messageId, e);
+        }
+        return response;
+    }
+
+    /**
+     * 通知消息已经处理完毕
      */
     public void messageNotify(MessageResponse response) {
         this.response = response;

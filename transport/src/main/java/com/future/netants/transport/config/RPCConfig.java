@@ -1,20 +1,16 @@
-package com.future.netants.transport.consumer;
+package com.future.netants.transport.config;
 
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Created by zhaofeng on 2018/11/26.
+ * Created by zhaofeng on 2018/11/27.
  */
-public class ClientConfig {
+public class RPCConfig {
 
     /**
      * 存放所有用户客户端自己配置的信息
      */
     private volatile ConcurrentHashMap<String, String> configs = new ConcurrentHashMap();
-
-//    public ConcurrentHashMap getConfigs() {
-//        return configs;
-//    }
 
     /**
      * 获取字符串配置
@@ -42,14 +38,14 @@ public class ClientConfig {
      * 配置
      * @param key key
      * @param value value
-     * @return ClientConfig 对象
+     * @return RPCConfig 对象
      */
-    public ClientConfig set(String key, String value) {
+    public RPCConfig set(String key, String value) {
         configs.putIfAbsent(key, value);
         return this;
     }
 
-    public ClientConfig set(String key, int value) {
+    public RPCConfig set(String key, int value) {
         return set(key, String.valueOf(value));
     }
 

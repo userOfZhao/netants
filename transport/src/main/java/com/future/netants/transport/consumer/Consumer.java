@@ -1,5 +1,7 @@
 package com.future.netants.transport.consumer;
 
+import com.future.netants.transport.config.RPCConfig;
+
 /**
  * Created by zhaofeng01 on 2018/11/26.
  */
@@ -18,5 +20,5 @@ public interface Consumer {
      * rpc客户端配置
      * @param config    客户端配置对象
      */
-    void setConfig(ClientConfig config);
+    void setConfig(RPCConfig config);
 }

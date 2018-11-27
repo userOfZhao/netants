@@ -1,5 +1,6 @@
 package com.future.netants.transport.consumer;
 
+import com.future.netants.transport.config.RPCConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +13,7 @@ public class RPCConsumer implements Consumer {
 
     private static final Logger logger = LoggerFactory.getLogger(RPCConsumer.class);
 
-    private volatile ClientConfig config;
+    private volatile RPCConfig config;
 
     /**
      * 目前只做点对点的链接，后续接入zk之后，会进行多连接
@@ -31,7 +32,7 @@ public class RPCConsumer implements Consumer {
     }
 
     @Override
-    public void setConfig(ClientConfig config) {
+    public void setConfig(RPCConfig config) {
         this.config = config;
     }
 

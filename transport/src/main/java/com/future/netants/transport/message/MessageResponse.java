@@ -25,4 +25,10 @@ public class MessageResponse extends Message implements Serializable{
      * 请求结果
      */
     private String result;
+
+    /**
+     * 方法返回类型
+     */
+    private Class<?> returnType;
+
 }

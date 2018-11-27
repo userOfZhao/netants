@@ -3,6 +3,7 @@ package com.future.netants.transport.consumer;
 import com.future.netants.core.balance.LoadBalance;
 import com.future.netants.core.balance.LoadBalanceFactory;
 import com.future.netants.core.rpc.conf.ConfConstant;
+import com.future.netants.transport.config.RPCConfig;
 import com.future.netants.transport.consumer.handler.ClientChannelInitializer;
 import com.future.netants.transport.consumer.handler.MessageSendHandler;
 import com.future.netants.transport.message.MessageNotify;
@@ -35,7 +36,7 @@ public class RPCServiceLoad {
     /**
      * 客户端RPC配置
      */
-    private ClientConfig clientConfig;
+    private RPCConfig config;
 
     /**
      * 所有远程连接
@@ -67,7 +68,7 @@ public class RPCServiceLoad {
      * @return                  待回复的结果
      */
     public MessageNotify sendMessage(String interfaceName, MessageRequest request) {
-        LoadBalance loadBalance = LoadBalanceFactory.getInstance().createObject(clientConfig.getString("loadBalance", "random"));
+        LoadBalance loadBalance = LoadBalanceFactory.getInstance().createObject(config.getString("loadBalance", "random"));
         ChannelFuture future = loadBalance.getFuture(connections.get(interfaceName));
         return future.channel().pipeline().get(MessageSendHandler.class).sendMsg(request);
     }
@@ -77,11 +78,11 @@ public class RPCServiceLoad {
      * @param clientConfig 客户端配置
      * @return RPCServiceLoad 实例，用于构建
      */
-    public RPCServiceLoad loadConfig(ClientConfig clientConfig) {
+    public RPCServiceLoad loadConfig(RPCConfig clientConfig) {
         if (clientConfig == null) {
             throw new IllegalArgumentException("RPC Client config can not be null");
         }
-        this.clientConfig = clientConfig;
+        this.config = clientConfig;
         return this;
     }
 
@@ -94,8 +95,8 @@ public class RPCServiceLoad {
         }
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         try {
-            String host = clientConfig.getString(ConfConstant.SERVER_HOST, DEFAULT_SERVER_HOST);
-            int port = clientConfig.getInt(ConfConstant.SERVER_PORT, DEFAULT_SERVER_PORT);
+            String host = config.getString(ConfConstant.SERVER_HOST, DEFAULT_SERVER_HOST);
+            int port = config.getInt(ConfConstant.SERVER_PORT, DEFAULT_SERVER_PORT);
             Bootstrap bootstrap = new Bootstrap();
             bootstrap.group(bossGroup)
                     .channel(NioSocketChannel.class)
