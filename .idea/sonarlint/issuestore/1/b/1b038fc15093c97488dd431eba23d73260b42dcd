@@ -1,0 +1,5 @@
+
+usquid:UselessImportCheck"JRemove this unused import 'io.netty.channel.ChannelInboundHandlerAdapter'.(þ‘Â³8»µˆþô,
+¤%squid:RedundantThrowsDeclarationCheck%"lRemove the declaration of thrown exception 'java.lang.Exception', as it cannot be thrown from method's body.(¨íôø8„ö×ýô,
+^squid:S00112%"FDefine and throw a dedicated exception instead of using a generic one.(¨íôø
+Vsquid:S1161":Add the "@Override" annotation above this method signature(”ðÛÌùÿÿÿÿ
