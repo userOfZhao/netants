@@ -1,4 +1,4 @@
-package com.future.netants.core;
+package com.future.netants.core.factory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -5,4 +5,6 @@ package com.future.netants.transport.consumer;
  */
 public interface Consumer {
     <T>T refer(Class<T> clazz, String provider);
+
+    void setConfig(ClientConfig config);
 }
