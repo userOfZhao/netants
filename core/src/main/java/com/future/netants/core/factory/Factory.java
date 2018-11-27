@@ -9,4 +9,6 @@ public interface Factory {
 
     <T> T createObject(String name);
 
+    <T> T createObject(Class<T> clazz);
+
 }

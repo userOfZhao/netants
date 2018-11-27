@@ -19,5 +19,9 @@ public abstract class AbstractFactory implements Factory {
         return null;
     }
 
+    public <T> T createObject(Class<T> clazz) {
+        return null;
+    }
+
     public abstract Factory createFactory();
 }
