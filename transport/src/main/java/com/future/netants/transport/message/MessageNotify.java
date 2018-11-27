@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import static com.future.netants.core.rpc.conf.RPCConfig.DEFAULT_MESSAGE_WAIT;
+import static com.future.netants.core.rpc.conf.ConfConstant.DEFAULT_MESSAGE_WAIT;
 
 /**
  * Created by zhaofeng01 on 2018/11/27.

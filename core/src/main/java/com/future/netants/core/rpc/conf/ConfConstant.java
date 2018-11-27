@@ -4,7 +4,7 @@ package com.future.netants.core.rpc.conf;
 /**
  * Created by zhaofeng01 on 2018/11/27.
  */
-public class RPCConfig {
+public class ConfConstant {
 
     public static String DEFAULT_SERVER_HOST = "127.0.0.1";
 

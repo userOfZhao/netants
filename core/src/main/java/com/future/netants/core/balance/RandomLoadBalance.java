@@ -23,7 +23,6 @@ public class RandomLoadBalance implements LoadBalance {
     public ChannelFuture getFuture(Map<String, ChannelFuture> futureMap) {
         int size = futureMap.size();
         Set<String> keys = futureMap.keySet();
-        keys.
-        return null;
+        return futureMap.get(keys.toArray()[0]);
     }
 }

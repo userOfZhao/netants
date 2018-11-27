@@ -18,6 +18,12 @@ public class ConsumerInvocationHandler implements InvocationHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(ConsumerInvocationHandler.class);
 
+    private String interfaceName;
+
+    public ConsumerInvocationHandler(String name) {
+        this.interfaceName = name;
+    }
+
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         MessageRequest requestMessage = (MessageRequest) MessageFactory.getInstance().createObject("request");
@@ -26,6 +32,6 @@ public class ConsumerInvocationHandler implements InvocationHandler {
         requestMessage.setMethod(method.getName());
         requestMessage.setParams(method.getParameterTypes());
         requestMessage.setParams(args);
-        return MessageSendHandler.;
+        return RPCServiceLoad.getInstance().sendMessage(interfaceName, requestMessage).get();
     }
 }

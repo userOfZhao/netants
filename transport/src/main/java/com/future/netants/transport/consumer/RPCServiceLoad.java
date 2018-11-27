@@ -1,8 +1,12 @@
 package com.future.netants.transport.consumer;
 
-import com.future.netants.core.rpc.conf.RPCConfig;
+import com.future.netants.core.balance.LoadBalance;
+import com.future.netants.core.balance.LoadBalanceFactory;
+import com.future.netants.core.rpc.conf.ConfConstant;
 import com.future.netants.transport.consumer.handler.ClientChannelInitializer;
 import com.future.netants.transport.consumer.handler.MessageSendHandler;
+import com.future.netants.transport.message.MessageNotify;
+import com.future.netants.transport.message.MessageRequest;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -13,8 +17,8 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.future.netants.core.rpc.conf.RPCConfig.DEFAULT_SERVER_HOST;
-import static com.future.netants.core.rpc.conf.RPCConfig.DEFAULT_SERVER_PORT;
+import static com.future.netants.core.rpc.conf.ConfConstant.DEFAULT_SERVER_HOST;
+import static com.future.netants.core.rpc.conf.ConfConstant.DEFAULT_SERVER_PORT;
 
 /**
  * Created by zhaofeng on 2018/11/26.
@@ -57,6 +61,18 @@ public class RPCServiceLoad {
     }
 
     /**
+     * 向远程服务发送信息
+     * @param interfaceName     接口名称
+     * @param request           请求对象
+     * @return                  待回复的结果
+     */
+    public MessageNotify sendMessage(String interfaceName, MessageRequest request) {
+        LoadBalance loadBalance = LoadBalanceFactory.getInstance().createObject(clientConfig.getString("loadBalance", "random"));
+        ChannelFuture future = loadBalance.getFuture(connections.get(interfaceName));
+        return future.channel().pipeline().get(MessageSendHandler.class).sendMsg(request);
+    }
+
+    /**
      * 加载客户端配置
      * @param clientConfig 客户端配置
      * @return RPCServiceLoad 实例，用于构建
@@ -78,8 +94,8 @@ public class RPCServiceLoad {
         }
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         try {
-            String host = clientConfig.getString(RPCConfig.SERVER_HOST, DEFAULT_SERVER_HOST);
-            int port = clientConfig.getInt(RPCConfig.SERVER_PORT, DEFAULT_SERVER_PORT);
+            String host = clientConfig.getString(ConfConstant.SERVER_HOST, DEFAULT_SERVER_HOST);
+            int port = clientConfig.getInt(ConfConstant.SERVER_PORT, DEFAULT_SERVER_PORT);
             Bootstrap bootstrap = new Bootstrap();
             bootstrap.group(bossGroup)
                     .channel(NioSocketChannel.class)
@@ -90,9 +106,17 @@ public class RPCServiceLoad {
             setChannel(interfaceName, host, port, future);
         } catch (Exception e) {
             logger.error("Interrupted occurs", e);
-        } finally {
-            bossGroup.shutdownGracefully();
         }
+    }
+
+    /**
+     * 移除一个链接
+     * @param provider  服务提供者名称
+     * @param host      host地址
+     * @param port      端口号
+     */
+    public void removeChannel(String provider, String host, int port) {
+        //TODO
     }
 
     /**
@@ -104,7 +128,7 @@ public class RPCServiceLoad {
      */
     private synchronized void setChannel(String provider, String host, int port, ChannelFuture future) {
         Map<String, ChannelFuture> map = connections.get(provider);
-        if (map.isEmpty()) {
+        if (map == null || map.isEmpty()) {
             ConcurrentHashMap<String, ChannelFuture> channels = new ConcurrentHashMap<>();
             channels.put(host.concat(String.valueOf(port)), future);
             connections.putIfAbsent(provider, channels);

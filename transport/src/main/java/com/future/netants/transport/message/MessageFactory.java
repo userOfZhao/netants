@@ -37,6 +37,10 @@ public class MessageFactory<T extends Message> extends AbstractFactory {
         return null;
     }
 
+    public MessageResponse newResponse() {
+        return new MessageResponse();
+    }
+
     @Override
     public Factory createFactory() {
         return null;

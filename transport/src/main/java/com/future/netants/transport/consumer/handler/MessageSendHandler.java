@@ -1,5 +1,6 @@
 package com.future.netants.transport.consumer.handler;
 
+import com.future.netants.core.seriliazer.JSON;
 import com.future.netants.transport.message.Message;
 import com.future.netants.transport.message.MessageNotify;
 import com.future.netants.transport.message.MessageRequest;
@@ -37,12 +38,18 @@ public class MessageSendHandler extends SimpleChannelInboundHandler {
 
         String body = new String(req, Charset.forName("UTF-8"));
         logger.info("receive body from server {}", body);
+        MessageResponse response = JSON.parseJson(body, MessageResponse.class);
+        MessageNotify notify = currentMsg.get(response.getMessageId());
+        currentMsg.remove(response.getMessageId());
+        if (notify != null) {
+            notify.messageNotify(response);
+        }
     }
 
     public MessageNotify sendMsg(MessageRequest msg) {
         MessageNotify notify = new MessageNotify(msg.getMessageId());
         currentMsg.put(msg.getMessageId(), notify);
-        ctx.channel().writeAndFlush(Unpooled.copiedBuffer(msg.toString().getBytes()));
+        ctx.channel().writeAndFlush(Unpooled.copiedBuffer(JSON.json(msg).getBytes()));
         return notify;
     }
 }
