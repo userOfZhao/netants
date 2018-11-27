@@ -1,5 +1,0 @@
-
-vsquid:S1450"XRemove the "workGroup" field and declare it as a local variable in the relevant methods.(Ύϋ“8£λªττ,
-jsquid:S00112&"FDefine and throw a dedicated exception instead of using a generic one.(κραϊÿÿÿÿ8£λªττ,
-vsquid:S1450"XRemove the "bossGroup" field and declare it as a local variable in the relevant methods.(χΎΑ¥8£λªττ,
-dsquid:S2142$"FEither re-interrupt this method or rethrow the "InterruptedException".(δ Ή€8£λªττ,
