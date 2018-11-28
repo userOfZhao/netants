@@ -1,6 +1,6 @@
 package com.future.netants.transport.provider;
 
-import com.future.netants.transport.provider.handler.TestHandler;
+import com.future.netants.transport.provider.handler.RequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -42,7 +42,7 @@ public class ServerStart {
     private static class ChildChannelHandler extends ChannelInitializer {
         @Override
         protected void initChannel(Channel channel) throws Exception {
-            channel.pipeline().addLast(new TestHandler());
+            channel.pipeline().addLast(new RequestHandler());
         }
     }
 }

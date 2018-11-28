@@ -10,7 +10,7 @@ public class StringUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(StringUtils.class);
 
-    public static boolean isEmpty(String str) {
+    public static boolean isEmpty(CharSequence str) {
         if (str == null || str.length() == 0) {
             return true;
         }

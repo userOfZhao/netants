@@ -11,4 +11,6 @@ public interface Factory {
 
     <T> T createObject(Class<T> clazz);
 
+    <T> T newInstance(Class<T> clazz);
+
 }

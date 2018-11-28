@@ -32,11 +32,7 @@ public class MessageSendHandler extends SimpleChannelInboundHandler {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ByteBuf buf = (ByteBuf) msg;
-        byte[] req = new byte[buf.readableBytes()];
-        buf.readBytes(req);
-
-        String body = new String(req, Charset.forName("UTF-8"));
+        String body = (String) msg;
         logger.info("receive body from server {}", body);
         MessageResponse response = JSON.parseJson(body, MessageResponse.class);
         MessageNotify notify = currentMsg.get(response.getMessageId());
@@ -49,7 +45,7 @@ public class MessageSendHandler extends SimpleChannelInboundHandler {
     public MessageNotify sendMsg(MessageRequest msg) {
         MessageNotify notify = new MessageNotify(msg.getMessageId());
         currentMsg.put(msg.getMessageId(), notify);
-        ctx.channel().writeAndFlush(Unpooled.copiedBuffer(JSON.json(msg).getBytes()));
+        ctx.channel().writeAndFlush(JSON.json(msg));
         return notify;
     }
 }

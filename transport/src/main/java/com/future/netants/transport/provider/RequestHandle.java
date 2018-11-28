@@ -13,9 +13,9 @@ import java.lang.reflect.Method;
 /**
  * Created by zhaofeng on 2018/11/28.
  */
-public class ProviderService implements Runnable {
+public class RequestHandle implements Runnable {
 
-    private static final Logger logger = LoggerFactory.getLogger(ProviderService.class);
+    private static final Logger logger = LoggerFactory.getLogger(RequestHandle.class);
 
     private MessageRequest request;
 
@@ -23,7 +23,7 @@ public class ProviderService implements Runnable {
 
     private MessageNotify notify;
 
-    public ProviderService(MessageRequest request, Object object, MessageNotify notify) {
+    public RequestHandle(MessageRequest request, Object object, MessageNotify notify) {
         this.request = request;
         this.object = object;
         this.notify = notify;

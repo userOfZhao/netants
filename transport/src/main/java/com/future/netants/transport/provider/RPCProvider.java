@@ -1,5 +1,6 @@
 package com.future.netants.transport.provider;
 
+import com.future.netants.common.util.StringUtils;
 import com.future.netants.transport.config.ProviderConfig;
 import com.future.netants.transport.config.RPCConfig;
 import org.slf4j.Logger;
@@ -31,7 +32,10 @@ public class RPCProvider<T> implements Provider {
 
     @Override
     public void export() {
-
+        if (StringUtils.isEmpty(interfaceId) || instance == null) {
+            throw new RuntimeException("Do not set interfaceId or ref instance");
+        }
+        RPCServerInit.getInstance().setConfig(config).start();
     }
 
     @Override

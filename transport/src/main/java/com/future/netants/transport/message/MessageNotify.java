@@ -42,9 +42,10 @@ public class MessageNotify {
     public Object get() {
         String result = null;
         try {
-            countDownLatch.await(DEFAULT_MESSAGE_WAIT, TimeUnit.MILLISECONDS);
-            if (response != null) {
-                result = response.getResult();
+            if (countDownLatch.await(DEFAULT_MESSAGE_WAIT, TimeUnit.MILLISECONDS)) {
+                if (response != null) {
+                    result = response.getResult();
+                }
             }
         } catch (InterruptedException e) {
             logger.error("wait to get rpc response error. messageId is {}", messageId, e);
