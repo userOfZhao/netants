@@ -45,4 +45,9 @@ public class MessageFactory<T extends Message> extends AbstractFactory {
     public Factory createFactory() {
         return null;
     }
+
+    @Override
+    public <T> T newInstance(Class<T> clazz) {
+        return null;
+    }
 }

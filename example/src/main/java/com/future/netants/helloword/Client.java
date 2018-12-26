@@ -16,7 +16,10 @@ public class Client {
         RPCConsumer rpcComsumer = new RPCConsumer();
         rpcComsumer.setConfig(config);
         Hello sayHello = rpcComsumer.refer(Hello.class, null);
-        sayHello.sayHello("hello");
+        for (int i =0; i< 10; i++) {
+            System.out.println(sayHello.sayHello("hello"));
+        }
+
 
     }
 }
