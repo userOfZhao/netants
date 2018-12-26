@@ -20,6 +20,6 @@ public class ServerChannelInitializer extends ChannelInitializer {
         //ch.pipeline().addLast(new LineBasedFrameDecoder(1024));
         ch.pipeline().addLast(new StringDecoder());
         ch.pipeline().addLast(new RequestHandler());
-        //ch.pipeline().addLast(new StringEncoder());
+        ch.pipeline().addLast(new StringEncoder());
     }
 }
