@@ -18,9 +18,14 @@ public interface Provider {
     Provider setRef(Object object);
 
     /**
-     * 设置服务的接口名称
+     * 设置发布服务名称
      */
     Provider setInterfaceId(String interfaceName);
+
+    /**
+     * 设置服务接口
+     */
+    Provider setInterfaceName(String interfaceName);
 
     /**
      * 设置服务端配置

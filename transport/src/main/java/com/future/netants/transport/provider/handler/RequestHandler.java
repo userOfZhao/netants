@@ -4,6 +4,7 @@ import com.future.netants.core.seriliazer.JSON;
 import com.future.netants.transport.message.MessageFactory;
 import com.future.netants.transport.message.MessageRequest;
 import com.future.netants.transport.message.MessageResponse;
+import com.future.netants.transport.provider.RPCProvider;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -26,5 +27,9 @@ public class RequestHandler extends SimpleChannelInboundHandler {
         response.setMessageId(messageRequest.getMessageId());
         response.setResult("hello boy. nice to meet you");
         channelHandlerContext.writeAndFlush(Unpooled.copiedBuffer(JSON.json(response).getBytes()));
+    }
+
+    private void handleRequest(MessageRequest messageRequest) {
+        Object obj = RPCProvider.getServerRef(messageRequest.getClassName());
     }
 }
