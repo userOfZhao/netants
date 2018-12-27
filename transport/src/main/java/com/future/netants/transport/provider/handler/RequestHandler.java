@@ -4,6 +4,7 @@ import com.future.netants.core.seriliazer.JSON;
 import com.future.netants.transport.message.MessageFactory;
 import com.future.netants.transport.message.MessageRequest;
 import com.future.netants.transport.message.MessageResponse;
+import com.future.netants.transport.provider.ProviderInvocationHandler;
 import com.future.netants.transport.provider.RPCProvider;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -30,6 +31,6 @@ public class RequestHandler extends SimpleChannelInboundHandler {
     }
 
     private void handleRequest(MessageRequest messageRequest) {
-        Object obj = RPCProvider.getServerRef(messageRequest.getClassName());
+        //ProviderInvocationHandler invocationHandler = new ProviderInvocationHandler()
     }
 }

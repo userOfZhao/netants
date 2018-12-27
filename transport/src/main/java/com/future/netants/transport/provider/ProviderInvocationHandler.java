@@ -3,6 +3,7 @@ package com.future.netants.transport.provider;
 import com.future.netants.core.seriliazer.JSON;
 import com.future.netants.transport.message.*;
 
+import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,20 +14,20 @@ import java.lang.reflect.Method;
 /**
  * Created by zhaofeng on 2018/11/28.
  */
-public class RequestHandle implements Runnable {
+public class ProviderInvocationHandler implements Runnable {
 
-    private static final Logger logger = LoggerFactory.getLogger(RequestHandle.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProviderInvocationHandler.class);
 
     private MessageRequest request;
 
     private Object object;
 
-    private MessageNotify notify;
+    private ChannelHandlerContext ctx;
 
-    public RequestHandle(MessageRequest request, Object object, MessageNotify notify) {
+    public ProviderInvocationHandler(MessageRequest request, Object object, ChannelHandlerContext channelHandlerContext) {
         this.request = request;
         this.object = object;
-        this.notify = notify;
+        this.ctx = channelHandlerContext;
     }
 
     @Override
@@ -39,7 +40,7 @@ public class RequestHandle implements Runnable {
             response.setCode(0);
             response.setResult(JSON.json(result));
             response.setReturnType(method.getReturnType());
-            notify.messageNotify(response);
+            ctx.write(JSON.json(response));
         } catch (NoSuchMethodException e) {
             logger.error("Not found RPC Method. class is {}, method is {}, message request is {}", object.getClass().getName(), methodName, request);
             // TODO
