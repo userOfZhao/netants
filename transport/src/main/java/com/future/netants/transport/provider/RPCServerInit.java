@@ -58,7 +58,7 @@ class RPCServerInit {
             bootstrap.group(bossGroup, workGroup)
                     .channel(NioServerSocketChannel.class)
                     .option(ChannelOption.SO_BACKLOG, 1024)
-                    .childHandler(new ServerChannelInitializer());
+                    .childHandler(new ServerChannelInitializer(5, 100));
             ChannelFuture future = bootstrap.bind(config.getPort());
             future.channel().closeFuture().sync();
         } catch (InterruptedException e) {

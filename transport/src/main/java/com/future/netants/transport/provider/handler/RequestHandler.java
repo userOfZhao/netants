@@ -23,14 +23,10 @@ public class RequestHandler extends SimpleChannelInboundHandler {
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
         String request = (String) msg;
         logger.info("receive body from client {}", request);
-        MessageResponse response = MessageFactory.getInstance().newResponse();
-        MessageRequest messageRequest = JSON.parseJson(request, MessageRequest.class);
-        response.setMessageId(messageRequest.getMessageId());
-        response.setResult("hello boy. nice to meet you");
-        channelHandlerContext.writeAndFlush(Unpooled.copiedBuffer(JSON.json(response).getBytes()));
-    }
 
-    private void handleRequest(MessageRequest messageRequest) {
-        //ProviderInvocationHandler invocationHandler = new ProviderInvocationHandler()
+        MessageRequest messageRequest = JSON.parseJson(request, MessageRequest.class);
+
+        //channelHandlerContext.writeAndFlush(Unpooled.copiedBuffer(JSON.json(response).getBytes()));
+        channelHandlerContext.fireChannelRead(messageRequest);
     }
 }
