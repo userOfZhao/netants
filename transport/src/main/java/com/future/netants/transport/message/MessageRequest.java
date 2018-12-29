@@ -28,7 +28,7 @@ public class MessageRequest extends Message implements Serializable {
     /**
      * 方法的参数类型
      */
-    private Class<?>[] typeParams;
+    private Class<?>[] paramTypes;
 
     /**
      * 方法的参数

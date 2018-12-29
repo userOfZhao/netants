@@ -24,25 +24,25 @@ public class ProviderInvocationHandler implements Runnable {
 
     private ChannelHandlerContext ctx;
 
-    public ProviderInvocationHandler(MessageRequest request, Object object, ChannelHandlerContext channelHandlerContext) {
+    public ProviderInvocationHandler(MessageRequest request, ChannelHandlerContext channelHandlerContext) {
         this.request = request;
-        this.object = object;
         this.ctx = channelHandlerContext;
+        this.object = RPCProvider.getServerRef(request.getClassName());
     }
 
     @Override
     public void run() {
         String methodName = request.getMethod();
         try {
-            Method method = object.getClass().getDeclaredMethod(methodName, request.getTypeParams());
+            Method method = object.getClass().getMethod(methodName, request.getParamTypes());
             Object result = method.invoke(object, request.getParams());
             MessageResponse response = MessageFactory.getInstance().newResponse();
             response.setCode(0);
             response.setResult(JSON.json(result));
             response.setReturnType(method.getReturnType());
-            ctx.write(JSON.json(response));
+            ctx.writeAndFlush(JSON.json(response));
         } catch (NoSuchMethodException e) {
-            logger.error("Not found RPC Method. class is {}, method is {}, message request is {}", object.getClass().getName(), methodName, request);
+            logger.error("Not found RPC Method. provider class is {}, method is {}, message request is {}", object.getClass().getName(), methodName, request);
             // TODO
         } catch (InvocationTargetException e) {
             logger.error("failed to invocation method. class is {}, method is {}, request is {}",object.getClass().getName(), methodName, request);

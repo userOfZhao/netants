@@ -1,10 +1,8 @@
 package com.future.netants.transport.consumer;
 
 import com.future.netants.common.util.Utils;
-import com.future.netants.transport.consumer.handler.MessageSendHandler;
 import com.future.netants.transport.message.MessageFactory;
 import com.future.netants.transport.message.MessageRequest;
-import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +28,7 @@ public class ConsumerInvocationHandler implements InvocationHandler {
         requestMessage.setMessageId(Utils.getUUID());
         requestMessage.setClassName(method.getDeclaringClass().getName());
         requestMessage.setMethod(method.getName());
-        requestMessage.setParams(method.getParameterTypes());
+        requestMessage.setParamTypes(method.getParameterTypes());
         requestMessage.setParams(args);
         return RPCServiceLoad.getInstance().sendMessage(interfaceName, requestMessage).get();
     }

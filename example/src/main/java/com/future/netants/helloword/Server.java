@@ -17,6 +17,6 @@ public class Server {
         ProviderConfig config = new ProviderConfig();
         config.setPort(9997).setProtocol("test");
         RPCProvider provider = new RPCProvider();
-        provider.setInterfaceId("helloService").setConfig(config).setRef(new SayHello()).export();
+        provider.setInterfaceId("helloService").setInterfaceName(Hello.class.getName()).setConfig(config).setRef(new SayHello()).export();
     }
 }

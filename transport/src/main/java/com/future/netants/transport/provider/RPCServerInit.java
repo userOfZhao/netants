@@ -39,7 +39,7 @@ class RPCServerInit {
 
     private RPCServerInit() {}
 
-    public static RPCServerInit getInstance() {
+    static RPCServerInit getInstance() {
         if (instance == null) {
             synchronized (RPCServerInit.class) {
                 if (instance == null) {
@@ -50,7 +50,22 @@ class RPCServerInit {
         return instance;
     }
 
-    public void start() {
+    void start() {
+        startBusinessThreadPool();
+        startEventLoop();
+    }
+
+    /**
+     * start business thread pool
+     */
+    private void startBusinessThreadPool() {
+        BusinessServiceExecutor.getInstance().init();
+    }
+
+    /**
+     * start nio thread pool
+     */
+    private void startEventLoop() {
         bossGroup = new NioEventLoopGroup();
         workGroup = new NioEventLoopGroup();
         try {
@@ -58,7 +73,7 @@ class RPCServerInit {
             bootstrap.group(bossGroup, workGroup)
                     .channel(NioServerSocketChannel.class)
                     .option(ChannelOption.SO_BACKLOG, 1024)
-                    .childHandler(new ServerChannelInitializer(5, 100));
+                    .childHandler(new ServerChannelInitializer());
             ChannelFuture future = bootstrap.bind(config.getPort());
             future.channel().closeFuture().sync();
         } catch (InterruptedException e) {
