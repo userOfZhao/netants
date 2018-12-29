@@ -89,7 +89,7 @@ public class RPCServiceLoad {
     /**
      * 客户端加载RPC远程服务
      */
-    public void loadRPCService(String interfaceName) {
+    void loadRPCService(String interfaceName) {
         if (logger.isDebugEnabled()) {
             logger.debug("load rpc service now...");
         }

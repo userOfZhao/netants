@@ -4,6 +4,8 @@ import com.future.netants.core.seriliazer.JSON;
 import com.future.netants.transport.message.MessageFactory;
 import com.future.netants.transport.message.MessageRequest;
 import com.future.netants.transport.message.MessageResponse;
+import com.future.netants.transport.provider.ProviderInvocationHandler;
+import com.future.netants.transport.provider.RPCProvider;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -21,10 +23,10 @@ public class RequestHandler extends SimpleChannelInboundHandler {
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
         String request = (String) msg;
         logger.info("receive body from client {}", request);
-        MessageResponse response = MessageFactory.getInstance().newResponse();
+
         MessageRequest messageRequest = JSON.parseJson(request, MessageRequest.class);
-        response.setMessageId(messageRequest.getMessageId());
-        response.setResult("hello boy. nice to meet you");
-        channelHandlerContext.writeAndFlush(Unpooled.copiedBuffer(JSON.json(response).getBytes()));
+
+        //channelHandlerContext.writeAndFlush(Unpooled.copiedBuffer(JSON.json(response).getBytes()));
+        channelHandlerContext.fireChannelRead(messageRequest);
     }
 }

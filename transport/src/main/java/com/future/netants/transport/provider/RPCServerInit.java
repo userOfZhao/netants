@@ -2,7 +2,7 @@ package com.future.netants.transport.provider;
 
 import com.future.netants.core.annotation.Singleton;
 import com.future.netants.transport.config.ProviderConfig;
-import com.future.netants.transport.consumer.handler.ClientChannelInitializer;
+import com.future.netants.transport.provider.handler.ServerChannelInitializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
  * Created by zhaofeng01 on 2018/11/28.
  */
 @Singleton
-public class RPCServerInit {
+class RPCServerInit {
 
     private static final Logger logger = LoggerFactory.getLogger(RPCServerInit.class);
 
@@ -58,12 +58,12 @@ public class RPCServerInit {
             bootstrap.group(bossGroup, workGroup)
                     .channel(NioServerSocketChannel.class)
                     .option(ChannelOption.SO_BACKLOG, 1024)
-                    .childHandler(new ClientChannelInitializer());
+                    .childHandler(new ServerChannelInitializer(5, 100));
             ChannelFuture future = bootstrap.bind(config.getPort());
             future.channel().closeFuture().sync();
         } catch (InterruptedException e) {
-            logger.error("Interrupted occurs", e);
-            throw new RuntimeException("Interrupted occurs");
+            logger.error("Start rpc server failed", e);
+            throw new RuntimeException("RPC start fail.", e.getCause());
         }
     }
 

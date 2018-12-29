@@ -1,5 +1,6 @@
 package com.future.netants.transport.consumer;
 
+import com.future.netants.common.util.StringUtils;
 import com.future.netants.transport.config.RPCConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,12 @@ public class RPCConsumer implements Consumer {
      */
     @Override
     public <T> T refer(Class<T> clazz, String provider) {
-        String interfaceName = clazz.getName();
+        String interfaceName;
+        if (StringUtils.isEmpty(provider)) {
+            interfaceName =  clazz.getName();
+        } else {
+            interfaceName = provider;
+        }
         if (logger.isDebugEnabled()) {
             logger.debug("refer remote service. Class is {}, provider is {}", interfaceName, provider);
         }

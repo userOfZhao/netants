@@ -50,4 +50,9 @@ public class LoadBalanceFactory extends AbstractFactory {
     public LoadBalance createObject(String name) {
         return loadBalances.get(name);
     }
+
+    @Override
+    public <T> T newInstance(Class<T> clazz) {
+        return null;
+    }
 }
