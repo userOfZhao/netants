@@ -67,7 +67,7 @@ public class RPCServiceLoad {
      * @param request           请求对象
      * @return                  待回复的结果
      */
-    public MessageNotify sendMessage(String interfaceName, MessageRequest request) {
+    MessageNotify sendMessage(String interfaceName, MessageRequest request) {
         LoadBalance loadBalance = LoadBalanceFactory.getInstance().createObject(config.getString("loadBalance", "random"));
         ChannelFuture future = loadBalance.getFuture(connections.get(interfaceName));
         return future.channel().pipeline().get(MessageSendHandler.class).sendMsg(request);

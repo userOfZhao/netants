@@ -17,7 +17,6 @@ public class ClientChannelInitializer extends ChannelInitializer {
 
     @Override
     protected void initChannel(Channel ch) throws Exception {
-        //ch.pipeline().addLast(new LineBasedFrameDecoder(1024));
         ch.pipeline().addLast(new StringDecoder());
         ch.pipeline().addLast(new MessageSendHandler());
         ch.pipeline().addLast(new StringEncoder());

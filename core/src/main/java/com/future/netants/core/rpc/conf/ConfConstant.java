@@ -10,7 +10,7 @@ public class ConfConstant {
 
     public static int DEFAULT_SERVER_PORT = 9997;
 
-    public static long DEFAULT_MESSAGE_WAIT = 30 * 1000L;
+    public static long DEFAULT_MESSAGE_WAIT = 5 * 1000L;
 
     /**
      * RPC SERVER host

@@ -5,6 +5,8 @@ import com.future.netants.transport.provider.RPCProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+
 /**
  * Created by zhaofeng01 on 2018/11/26.
  */
@@ -12,7 +14,7 @@ public class Server {
 
     private static final Logger logger = LoggerFactory.getLogger(Server.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         logger.info("start server");
         ProviderConfig config = new ProviderConfig();
         config.setPort(9997).setProtocol("test");
