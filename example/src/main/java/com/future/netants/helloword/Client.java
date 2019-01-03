@@ -1,6 +1,7 @@
 package com.future.netants.helloword;
 
 import com.future.netants.core.rpc.conf.ConfConstant;
+import com.future.netants.transport.config.ConsumerConfig;
 import com.future.netants.transport.config.RPCConfig;
 import com.future.netants.transport.consumer.RPCConsumer;
 
@@ -11,7 +12,7 @@ public class Client {
 
     public static void main(String[] args) {
 
-        RPCConfig config = new RPCConfig();
+        ConsumerConfig config = new ConsumerConfig();
         config.set(ConfConstant.SERVER_PORT, 9997).set(ConfConstant.SERVER_HOST, "localhost");
         RPCConsumer rpcComsumer = new RPCConsumer();
         rpcComsumer.setConfig(config);

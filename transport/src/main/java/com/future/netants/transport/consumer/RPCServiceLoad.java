@@ -1,8 +1,10 @@
 package com.future.netants.transport.consumer;
 
+import com.future.netants.common.util.StringUtils;
 import com.future.netants.core.balance.LoadBalance;
 import com.future.netants.core.balance.LoadBalanceFactory;
 import com.future.netants.core.rpc.conf.ConfConstant;
+import com.future.netants.transport.config.ConsumerConfig;
 import com.future.netants.transport.config.RPCConfig;
 import com.future.netants.transport.consumer.handler.ClientChannelInitializer;
 import com.future.netants.transport.consumer.handler.MessageSendHandler;
@@ -36,13 +38,18 @@ public class RPCServiceLoad {
     /**
      * 客户端RPC配置
      */
-    private RPCConfig config;
+    private ConsumerConfig config;
 
     /**
      * 所有远程连接
      * 数据结构 : Map<interfaceName, Map<host:port, ChannelFuture>>
      */
     private volatile ConcurrentHashMap<String, ConcurrentHashMap<String, ChannelFuture>> connections = new ConcurrentHashMap<>();
+
+    /**
+     * 负载均衡策略
+     */
+    private LoadBalance loadBalance;
 
     private RPCServiceLoad() {}
 
@@ -68,7 +75,6 @@ public class RPCServiceLoad {
      * @return                  待回复的结果
      */
     MessageNotify sendMessage(String interfaceName, MessageRequest request) {
-        LoadBalance loadBalance = LoadBalanceFactory.getInstance().createObject(config.getString("loadBalance", "random"));
         ChannelFuture future = loadBalance.getFuture(connections.get(interfaceName));
         return future.channel().pipeline().get(MessageSendHandler.class).sendMsg(request);
     }
@@ -78,7 +84,7 @@ public class RPCServiceLoad {
      * @param clientConfig 客户端配置
      * @return RPCServiceLoad 实例，用于构建
      */
-    public RPCServiceLoad loadConfig(RPCConfig clientConfig) {
+    public RPCServiceLoad loadConfig(ConsumerConfig clientConfig) {
         if (clientConfig == null) {
             throw new IllegalArgumentException("RPC Client config can not be null");
         }
@@ -105,6 +111,7 @@ public class RPCServiceLoad {
                     .handler(new ClientChannelInitializer());
             ChannelFuture future = bootstrap.connect(host, port).sync();
             setChannel(interfaceName, host, port, future);
+            setLoadBalance();
         } catch (Exception e) {
             logger.error("Interrupted occurs", e);
         }
@@ -136,5 +143,16 @@ public class RPCServiceLoad {
         } else {
             map.putIfAbsent(host.concat(String.valueOf(port)), future);
         }
+    }
+
+    /**
+     * 设置负载均衡策略
+     */
+    private synchronized void setLoadBalance() {
+        String balanceStrategy = config.getLoadBalance();
+        if (StringUtils.isEmpty(balanceStrategy)) {
+            balanceStrategy = "random";
+        }
+        loadBalance = LoadBalanceFactory.getInstance().createObject(balanceStrategy);
     }
 }
