@@ -37,10 +37,11 @@ public class ProviderInvocationHandler implements Runnable {
             Method method = object.getClass().getMethod(methodName, request.getParamTypes());
             Object result = method.invoke(object, request.getParams());
             MessageResponse response = MessageFactory.getInstance().newResponse();
+            response.setMessageId(request.getMessageId());
             response.setCode(0);
             response.setResult(JSON.json(result));
             response.setReturnType(method.getReturnType());
-            ctx.writeAndFlush(JSON.json(response));
+            ctx.channel().writeAndFlush(JSON.json(response));
         } catch (NoSuchMethodException e) {
             logger.error("Not found RPC Method. provider class is {}, method is {}, message request is {}", object.getClass().getName(), methodName, request);
             // TODO

@@ -34,7 +34,7 @@ public class MessageSendHandler extends SimpleChannelInboundHandler {
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
         String body = (String) msg;
         if (logger.isDebugEnabled()) {
-            logger.info("receive response from remote server {}", body);
+            logger.debug("receive response from remote server {}", body);
         }
         MessageResponse response = JSON.parseJson(body, MessageResponse.class);
         MessageNotify notify = currentMsg.get(response.getMessageId());

@@ -12,6 +12,6 @@ public class SayHello implements Hello {
 
     @Override
     public String sayHello(String some) {
-        return "hello" + some;
+        return "Hello! This is netants. " + some;
     }
 }

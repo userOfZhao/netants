@@ -1,5 +1,6 @@
 package com.future.netants.transport.message;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -13,11 +14,13 @@ public class MessageRequest extends Message implements Serializable {
     /**
      * 消息的唯一ID
      */
+    @JsonProperty("m_id")
     private String messageId;
 
     /**
      * 服务提供方接口的类名称
      */
+    @JsonProperty("c_n")
     private String className;
 
     /**
@@ -28,6 +31,7 @@ public class MessageRequest extends Message implements Serializable {
     /**
      * 方法的参数类型
      */
+    @JsonProperty("p_type")
     private Class<?>[] paramTypes;
 
     /**
