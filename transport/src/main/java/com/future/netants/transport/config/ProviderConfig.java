@@ -25,18 +25,35 @@ public class ProviderConfig extends RPCConfig {
     private int port;
 
     /**
-     * 设置nio的bossGroup的数量
+     * RPC业务线程数量
      */
-    private int bossGroupCount;
+    private int threadNum = 10;
 
     /**
-     * 设置nio的workGroup的数量
+     * RPC请求等待队列长度
      */
-    private int workGroupCount;
+    private int businessQueueSize = 100;
 
     /**
-     * 设置端口号
+     * 预热所有线程池线程
      */
+    private boolean prestartAllThread = false;
+
+    public ProviderConfig setPrestartAllThread(boolean prestartAllThread) {
+        this.prestartAllThread = prestartAllThread;
+        return this;
+    }
+
+    public ProviderConfig setBusiNessQueueSize(int size) {
+        this.businessQueueSize = size;
+        return this;
+    }
+
+    public ProviderConfig setThreadNum(int threadNum) {
+        this.threadNum = threadNum;
+        return this;
+    }
+
     public ProviderConfig setPort(int port) {
         this.port = port;
         return this;

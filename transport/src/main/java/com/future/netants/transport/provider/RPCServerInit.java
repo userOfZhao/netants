@@ -2,6 +2,7 @@ package com.future.netants.transport.provider;
 
 import com.future.netants.core.annotation.Singleton;
 import com.future.netants.transport.config.ProviderConfig;
+import com.future.netants.transport.provider.handler.BusinessServiceExecutor;
 import com.future.netants.transport.provider.handler.ServerChannelInitializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -59,7 +60,10 @@ class RPCServerInit {
      * start business thread pool
      */
     private void startBusinessThreadPool() {
-        BusinessServiceExecutor.getInstance().init();
+        int threadNum = config.getThreadNum();
+        int queueSize = config.getBusinessQueueSize();
+        boolean prestartAllThread = config.isPrestartAllThread();
+        BusinessServiceExecutor.getInstance().init(threadNum, queueSize, prestartAllThread);
     }
 
     /**

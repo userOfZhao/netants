@@ -1,4 +1,4 @@
-package com.future.netants.transport.provider;
+package com.future.netants.transport.provider.handler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,18 +16,10 @@ public class BusinessServiceExecutor implements BusinessService {
 
     private ThreadPoolExecutor executor;
 
-    private static int Default_Pool_Size = Math.max(2 * Runtime.getRuntime().availableProcessors(), 4);
-
-    private static int Default_Queue_Size = 500;
-
     private BusinessServiceExecutor() {}
 
     public static BusinessServiceExecutor getInstance() {
         return instance;
-    }
-
-    public void init() {
-        init(Default_Pool_Size, Default_Queue_Size, false);
     }
 
     public void init(int corePoolSize, int queueSize, boolean prestart) {

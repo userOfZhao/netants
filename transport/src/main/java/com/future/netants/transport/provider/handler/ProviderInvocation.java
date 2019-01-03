@@ -1,8 +1,9 @@
-package com.future.netants.transport.provider;
+package com.future.netants.transport.provider.handler;
 
 import com.future.netants.core.seriliazer.JSON;
 import com.future.netants.transport.message.*;
 
+import com.future.netants.transport.provider.RPCProvider;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +15,9 @@ import java.lang.reflect.Method;
 /**
  * Created by zhaofeng on 2018/11/28.
  */
-public class ProviderInvocationHandler implements Runnable {
+public class ProviderInvocation implements Runnable {
 
-    private static final Logger logger = LoggerFactory.getLogger(ProviderInvocationHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProviderInvocation.class);
 
     private MessageRequest request;
 
@@ -24,7 +25,7 @@ public class ProviderInvocationHandler implements Runnable {
 
     private ChannelHandlerContext ctx;
 
-    public ProviderInvocationHandler(MessageRequest request, ChannelHandlerContext channelHandlerContext) {
+    public ProviderInvocation(MessageRequest request, ChannelHandlerContext channelHandlerContext) {
         this.request = request;
         this.ctx = channelHandlerContext;
         this.object = RPCProvider.getServerRef(request.getClassName());

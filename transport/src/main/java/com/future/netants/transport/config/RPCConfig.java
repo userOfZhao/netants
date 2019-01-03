@@ -10,7 +10,7 @@ public class RPCConfig {
     /**
      * 存放所有用户客户端自己配置的信息
      */
-    private volatile ConcurrentHashMap<String, String> configs = new ConcurrentHashMap();
+    private volatile ConcurrentHashMap<String, String> configs = new ConcurrentHashMap<>();
 
     /**
      * 获取字符串配置
@@ -49,10 +49,10 @@ public class RPCConfig {
         return set(key, String.valueOf(value));
     }
 
-    public boolean initConfig() {
-        if (configs.isEmpty()) {
-            return false;
-        }
-        return true;
-    }
+//    public boolean initConfig() {
+//        if (configs.isEmpty()) {
+//            return false;
+//        }
+//        return true;
+//    }
 }
